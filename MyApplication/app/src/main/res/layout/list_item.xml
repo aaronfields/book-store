@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hemingway_placeholder"
+        android:maxHeight="120dp"
+        android:maxWidth="120dp"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="18dp"/>
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/image_view"
+        android:layout_centerVertical="true"
+        android:layout_alignTop="@id/image_view"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Name of item"/>
+    
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/image_view"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/item_name"
+        android:textSize="20sp"
+        android:text="Price of item"/>
+
+
+
+</RelativeLayout>

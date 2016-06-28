@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/cat_literature"
+        android:title="Literature &amp; Fiction"
+        app:showAsAction="never|withText"/>
+
+    <item
+        android:id="@+id/cat_mystery"
+        android:title="Mystery &amp; Suspense"
+        app:showAsAction="never|withText"/>
+    <item
+        android:id="@+id/cat_fantasy"
+        android:title="Science Fiction &amp; Fantasy"
+        app:showAsAction="never|withText"/>
+
+    <item
+        android:id="@+id/sort_author"
+        android:title="Sort by Author"
+        app:showAsAction="never|withText"/>
+
+    <item
+        android:id="@+id/sort_date"
+        android:title="Sort by Date Published"
+        app:showAsAction="never|withText"/>
+
+</menu>
