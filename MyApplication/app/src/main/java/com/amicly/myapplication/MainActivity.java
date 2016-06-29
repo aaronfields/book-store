@@ -1,9 +1,13 @@
 package com.amicly.myapplication;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,13 +33,24 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_ID = "Item ID";
     private Helper helper;
     private ArrayList<Book> mBooks = new ArrayList<>();
+    private ArrayList<Book> mSearchBooks = new ArrayList<>();
     private ArrayList<Book> mLitBooks = new ArrayList<>();
+    private ArrayList<Book> mMysBooks = new ArrayList<>();
+    private ArrayList<Book> mFanBooks = new ArrayList<>();
+    private ArrayList<Book> mSortAuthors = new ArrayList<>();
+    private ArrayList<Book> mSortDate = new ArrayList<>();
+    private ArrayList<Book> mGetAll = new ArrayList<>();
     private int ID;
+    GridView gridview;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handleIntent(getIntent());
+
 
         // Set the URLs for the images to a String
         forWhomTheBellTolls = "http://d28hgpri8am2if.cloudfront.net/book_images/cvr9780684830483_9780684830483_hr.jpg";
@@ -47,9 +63,13 @@ public class MainActivity extends AppCompatActivity {
         lordOfTheRings = "http://d.gr-assets.com/books/1411114164l/33.jpg";
         book1984 = "http://d.gr-assets.com/books/1348990566l/5470.jpg";
 
+        gridview = (GridView) findViewById(R.id.gridview);
+
         helper = Helper.getInstance(MainActivity.this);
+        helper.cleanDataBase();
 
         // Use AsyncTask to add data to the database
+
         new AsyncTask<Book, Void, String>() {
             @Override
             protected String doInBackground(Book... bookses) {
@@ -101,14 +121,16 @@ public class MainActivity extends AppCompatActivity {
             protected void onPostExecute(String s) {
 
                 super.onPostExecute(s);
-                //set to textViews etc...
+                mBooks = helper.getBooks();
+                gridview.setAdapter(new ImageAdapter(MainActivity.this, mBooks));
+
             }
         }.execute();
 
         // Populate the gridview with the data we just put into the database
-        mBooks = helper.getBooks();
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this, mBooks));
+        //mBooks = helper.getBooks();
+        //gridview = (GridView) findViewById(R.id.gridview);
+        //gridview.setAdapter(new ImageAdapter(this, mBooks));
 
         // Set on-click to bring object clicked to details activity
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -128,40 +150,86 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Create menu on Action Bar
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        // Create Search function
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.search),
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                       // helper.searchBooks(query);
+                        mSearchBooks = helper.searchBooks(query);
+                        gridview.setAdapter(new ImageAdapter(MainActivity.this, mSearchBooks));
+                        return true;
+                    }
+                });
+
+
+        return true;
+    }
+
+    private void handleIntent(Intent intent) {
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            query = intent.getStringExtra(SearchManager.QUERY);
+            mSearchBooks = helper.searchBooks(query);
+            gridview.setAdapter(new ImageAdapter(this, mSearchBooks));
+        }
     }
 
     // Switch case for what to do when each menu item is clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        GridView litView = (GridView) findViewById(R.id.gridview);
         switch (item.getItemId()) {
             case R.id.cat_literature:
                 mLitBooks = helper.getLitBooks();
-                litView.setAdapter(new ImageAdapter(this, mBooks));
-                //helper.close();
+                Toast.makeText(MainActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
+                gridview.setAdapter(new ImageAdapter(this, mLitBooks));
+                helper.close();
                 break;
             case R.id.cat_mystery:
-                helper.getMystery();
+                mMysBooks = helper.getMysBooks();
+                gridview.setAdapter(new ImageAdapter(this, mMysBooks));
                 helper.close();
                 break;
             case R.id.cat_fantasy:
-                helper.getFantasy();
+                mFanBooks = helper.getFanBooks();
+                gridview.setAdapter(new ImageAdapter(this, mFanBooks));
                 helper.close();
                 break;
             case R.id.sort_author:
-                helper.sortByAuthor();
+                mSortAuthors = helper.getsortAuthors();
+                gridview.setAdapter(new ImageAdapter(this, mSortAuthors));
                 helper.close();
                 break;
             case R.id.sort_date:
-                helper.sortByDate();
+                mSortDate = helper.getsortDate();
+                gridview.setAdapter(new ImageAdapter(this, mSortDate));
                 helper.close();
+                break;
+            case R.id.return_all:
+                mGetAll = helper.getAll();
+                gridview.setAdapter(new ImageAdapter(this, mGetAll));
+                helper.close();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

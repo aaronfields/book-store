@@ -7,8 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -31,6 +34,10 @@ public class DetailActivity extends AppCompatActivity {
     public int position;
     Helper helper;
     private Book mBook;
+    public static final String KEY_ID2 = "Item ID2";
+    private ArrayList<Book> mBooks = new ArrayList<>();
+    private Button checkout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +53,13 @@ public class DetailActivity extends AppCompatActivity {
         helper = Helper.getInstance(DetailActivity.this);
         mBook = helper.getMyBook(position);
 
+
         //mBook = new Book(category, author, title, price, date, image);
         String category = mBook.getCategory();
         String title = mBook.getTitle();
         String author = mBook.getAuthor();
         String date = mBook.getDate();
-        double price = mBook.getPrice();
+        final double price = mBook.getPrice();
         String priceDouble = Double.toString(price);
         String imageURI = mBook.getImageURI();
 
@@ -75,9 +83,18 @@ public class DetailActivity extends AppCompatActivity {
         sendToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (DetailActivity.this, Cart.class);
-                startActivity(intent);
+                Singleton.getInstance().addBook(mBook);
+                Toast.makeText(DetailActivity.this, "Added to Cart!", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        checkout = (Button) findViewById(R.id.checkout_button);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (DetailActivity.this, CartActivity.class);
+                startActivity(intent);
             }
         });
 

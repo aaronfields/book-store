@@ -13,8 +13,8 @@
 
     <ImageView
         android:id="@+id/detail_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
         android:src="@drawable/hemingway_placeholder"/>
@@ -52,11 +52,22 @@
         android:id="@+id/detail_cartButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/detail_price"
+        android:layout_below="@+id/detail_price"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="Add to Cart"
+        android:background="#f8f089"/>
+
+    <Button
+        android:id="@+id/checkout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_cartButton"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="View Cart"
         android:background="#f8f089"/>
 
 

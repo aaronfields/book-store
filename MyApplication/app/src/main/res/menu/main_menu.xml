@@ -26,4 +26,15 @@
         android:title="Sort by Date Published"
         app:showAsAction="never|withText"/>
 
+    <item
+        android:id="@+id/return_all"
+        android:title="All"
+        app:showAsAction="never|withText"/>
+
+    <item android:id="@+id/search"
+          android:title="Search"
+          android:icon="@android:drawable/ic_menu_search"
+          app:showAsAction="collapseActionView|ifRoom"
+          app:actionViewClass="android.support.v7.widget.SearchView"/>
+
 </menu>

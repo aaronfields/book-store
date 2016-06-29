@@ -18,16 +18,14 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter{
     private Context mContext;
     private ArrayList<Book> mBooks;
-    //private ArrayList<Book> mLitBooks;
 
     public ImageAdapter(Context c, ArrayList<Book> b) {
         mContext = c;
         mBooks = b;
-        //mLitBooks = b;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return mBooks.size();
     }
 
     public Object getItem(int position) {
@@ -35,7 +33,7 @@ public class ImageAdapter extends BaseAdapter{
     }
 
     public long getItemId(int position) {
-        return 0;
+        return mBooks.get(position).getID();
     }
 
     // create a new ImageView for each item referenced by the Adapter
@@ -46,10 +44,6 @@ public class ImageAdapter extends BaseAdapter{
 
         View gridView;
 
-        if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            //imageView = new ImageView(mContext);
-            gridView = new View(mContext);
             gridView = inflater.inflate(R.layout.grid_item, null);
 
             imageView = (ImageView) gridView.findViewById(R.id.grid_image);
@@ -58,7 +52,6 @@ public class ImageAdapter extends BaseAdapter{
             TextView gridPrice = (TextView) gridView.findViewById(R.id.grid_price);
 
             Book Bookb = mBooks.get(position);
-            //Book BookLit = mLitBooks.get(position);
 
             String title = Bookb.getTitle();
             String author = Bookb.getAuthor();
@@ -72,13 +65,6 @@ public class ImageAdapter extends BaseAdapter{
 
             Picasso.with(mContext).load(imageURI).into(imageView);
 
-        } else {
-            //imageView = (ImageView) convertView;
-            gridView = (View) convertView;
-
-        }
-
-        //gridView.setImageResource(mThumbIds[position]);
         return gridView;
     }
 
@@ -87,10 +73,7 @@ public class ImageAdapter extends BaseAdapter{
             R.drawable.for_whom_the_bell_tolls, R.drawable.east_of_eden, R.drawable.great_gatsby,
             R.drawable.dragon_tattoo, R.drawable.crime_and_punishment, R.drawable.from_russia_with_love,
             R.drawable.harry_potter, R.drawable.lord_of_the_rings, R.drawable.book1984
-//
-//            R.drawable.sample_2, R.drawable.sample_3,
-//            R.drawable.sample_4, R.drawable.sample_5,
-//            R.drawable.sample_6, R.drawable.sample_7
+
     };
 }
-//}
+
