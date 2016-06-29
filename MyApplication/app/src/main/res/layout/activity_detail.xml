@@ -34,17 +34,10 @@
         android:text="Author"
         android:layout_alignLeft="@+id/detail_image"/>
     <TextView
-        android:id="@+id/detail_publisher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_author"
-        android:text="Publisher"
-        android:layout_alignLeft="@+id/detail_image"/>
-    <TextView
         android:id="@+id/detail_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_publisher"
+        android:layout_below="@+id/detail_author"
         android:text="Year Published"
         android:layout_alignLeft="@+id/detail_image"/>
     <TextView

@@ -28,32 +28,32 @@ public class DetailActivity extends AppCompatActivity {
     private double wholesalePrice;
     private String wholesaleDouble;
     private Button sendToCart;
-
+    public int position;
+    Helper helper;
+    private Book mBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        int id = 0;
+        position = 0;
         Intent intent = getIntent();
-        if(intent.hasExtra(MainActivity.KEY_ID)){
-            id = (int) intent.getLongExtra(MainActivity.KEY_ID, 0);
+        if(intent != null){
+            position = intent.getIntExtra(MainActivity.KEY_ID, position);
         }
 
-        Helper helper = Helper.getInstance(DetailActivity.this);
-        Book book = new Book(category, author, title, price, date, image);
-        String category = book.getCategory();
-        String title = book.getTitle();
-        String author = book.getAuthor();
-        String date = book.getDate();
-        double price = book.getPrice();
+        helper = Helper.getInstance(DetailActivity.this);
+        mBook = helper.getMyBook(position);
+
+        //mBook = new Book(category, author, title, price, date, image);
+        String category = mBook.getCategory();
+        String title = mBook.getTitle();
+        String author = mBook.getAuthor();
+        String date = mBook.getDate();
+        double price = mBook.getPrice();
         String priceDouble = Double.toString(price);
-        String imageURI = book.getImageURI();
-
-        Publishers publisher = new Publishers(company, title, wholesalePrice);
-        String company = publisher.getCompany();
-
+        String imageURI = mBook.getImageURI();
 
 
         titleText = (TextView) findViewById(R.id.detail_title);
@@ -61,9 +61,6 @@ public class DetailActivity extends AppCompatActivity {
 
         authorText = (TextView) findViewById(R.id.detail_author);
         authorText.setText(author);
-
-        publisherText = (TextView) findViewById(R.id.detail_publisher);
-        publisherText.setText(company);
 
         dateText = (TextView) findViewById(R.id.detail_date);
         dateText.setText(date);
@@ -74,7 +71,7 @@ public class DetailActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.detail_image);
         Picasso.with(DetailActivity.this).load(imageURI).into(imageView);
 
-
+        sendToCart = (Button) findViewById(R.id.detail_cartButton);
         sendToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

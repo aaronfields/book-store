@@ -27,13 +27,16 @@ public class MainActivity extends AppCompatActivity {
     private String book1984;
     public static final String KEY_ID = "Item ID";
     private Helper helper;
-    private ArrayList<Book> mBook = new ArrayList<>();
+    private ArrayList<Book> mBooks = new ArrayList<>();
+    private ArrayList<Book> mLitBooks = new ArrayList<>();
+    private int ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set the URLs for the images to a String
         forWhomTheBellTolls = "http://d28hgpri8am2if.cloudfront.net/book_images/cvr9780684830483_9780684830483_hr.jpg";
         eastOfEden = "http://d.gr-assets.com/books/1441547516l/4406.jpg";
         greatGatsby = "https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/TheGreatGatsby_1925jacket.jpeg/190px-TheGreatGatsby_1925jacket.jpeg";
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         helper = Helper.getInstance(MainActivity.this);
 
+        // Use AsyncTask to add data to the database
         new AsyncTask<Book, Void, String>() {
             @Override
             protected String doInBackground(Book... bookses) {
@@ -101,29 +105,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }.execute();
 
-        mBook.add(helper.getEverything());
+        // Populate the gridview with the data we just put into the database
+        mBooks = helper.getBooks();
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this, mBook));
+        gridview.setAdapter(new ImageAdapter(this, mBooks));
 
+        // Set on-click to bring object clicked to details activity
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent (MainActivity.this, DetailActivity.class);
-                intent.putExtra(KEY_ID, id);
+                intent.putExtra(KEY_ID, mBooks.get(position).getID());
                 startActivity(intent);
-
-//                Toast.makeText(MainActivity.this, "" + position,
-//                        Toast.LENGTH_SHORT).show();
             }
         });
 
 
-
+        // Create Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Aaron's Bookstore");
         setSupportActionBar(toolbar);
 
     }
 
+    // Create menu on Action Bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -132,12 +136,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Switch case for what to do when each menu item is clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        GridView litView = (GridView) findViewById(R.id.gridview);
         switch (item.getItemId()) {
             case R.id.cat_literature:
-                helper.getLiterature();
-                helper.close();
+                mLitBooks = helper.getLitBooks();
+                litView.setAdapter(new ImageAdapter(this, mBooks));
+                //helper.close();
                 break;
             case R.id.cat_mystery:
                 helper.getMystery();

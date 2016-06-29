@@ -18,10 +18,12 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter{
     private Context mContext;
     private ArrayList<Book> mBooks;
+    //private ArrayList<Book> mLitBooks;
 
     public ImageAdapter(Context c, ArrayList<Book> b) {
         mContext = c;
         mBooks = b;
+        //mLitBooks = b;
     }
 
     public int getCount() {
@@ -56,6 +58,7 @@ public class ImageAdapter extends BaseAdapter{
             TextView gridPrice = (TextView) gridView.findViewById(R.id.grid_price);
 
             Book Bookb = mBooks.get(position);
+            //Book BookLit = mLitBooks.get(position);
 
             String title = Bookb.getTitle();
             String author = Bookb.getAuthor();

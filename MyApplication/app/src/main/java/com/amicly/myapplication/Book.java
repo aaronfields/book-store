@@ -11,15 +11,33 @@ public class Book {
     private double price;
     private String date;
     private String imageURI;
+    private int ID;
 
-    public Book(String category, String author, String title, double price, String date, String imageURI) {
-
+    public Book(int ID, String category, String author, String title, double price, String date, String imageURI) {
+        this.ID = ID;
         this.category = category;
         this.author = author;
         this.title = title;
         this.price = price;
         this.date = date;
         this.imageURI = imageURI;
+    }
+
+    public Book(String category, String author, String title, double price, String date, String imageURI) {
+        this.category = category;
+        this.author = author;
+        this.title = title;
+        this.price = price;
+        this.date = date;
+        this.imageURI = imageURI;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
         public String getCategory() {
