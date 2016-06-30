@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFFFFF"
     tools:context=".CartActivity">
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +19,8 @@
               android:numColumns="2"
               android:verticalSpacing="10dp"
               android:horizontalSpacing="10dp"
-              android:stretchMode="columnWidth"/>
+              android:stretchMode="columnWidth"
+              />
 
     <Button
         android:id="@+id/purchase_button"
@@ -40,8 +42,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="#f8f089"
-        android:layout_alignBottom="@id/cart_gridview"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         android:text="Continue Shopping"/>
 
 </RelativeLayout>

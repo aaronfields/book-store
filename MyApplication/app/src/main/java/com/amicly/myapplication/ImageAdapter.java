@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter{
     private Context mContext;
     private ArrayList<Book> mBooks;
+    private DecimalFormat df;
 
     public ImageAdapter(Context c, ArrayList<Book> b) {
         mContext = c;
@@ -52,16 +54,18 @@ public class ImageAdapter extends BaseAdapter{
             TextView gridPrice = (TextView) gridView.findViewById(R.id.grid_price);
 
             Book Bookb = mBooks.get(position);
+            df = new DecimalFormat("0.00");
 
             String title = Bookb.getTitle();
             String author = Bookb.getAuthor();
+            String year = Bookb.getDate();
             double price = Bookb.getPrice();
             String priceDouble = Double.toString(price);
             String imageURI = Bookb.getImageURI();
 
             gridTitle.setText(title);
             gridAuthor.setText(author);
-            gridPrice.setText(priceDouble);
+            gridPrice.setText("$"+df.format(price));
 
             Picasso.with(mContext).load(imageURI).into(imageView);
 

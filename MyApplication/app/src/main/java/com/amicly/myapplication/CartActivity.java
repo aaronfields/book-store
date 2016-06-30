@@ -1,9 +1,12 @@
 package com.amicly.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -18,6 +21,9 @@ public class CartActivity extends AppCompatActivity {
     GridView cartView;
     private Button purchase;
     private Button backtoShopping;
+    private int mIndex;
+    public static final String KEY_ID = "Item ID";
+    ImageAdapter mImageAdapter;
 
 
     @Override
@@ -25,20 +31,11 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-//        position = 0;
-//        Intent intent = getIntent();
-//        if(intent != null){
-//            position = intent.getIntExtra(MainActivity.KEY_ID, position);
-//        }
-
         mBookList = Singleton.getInstance().getBooks();
 
-//        helper = Helper.getInstance(CartActivity.this);
-//        mBook = helper.getMyBook(position);
-        //mBooks.add(mBook);
-
         cartView= (GridView) findViewById(R.id.cart_gridview);
-        cartView.setAdapter(new ImageAdapter(this, mBookList));
+        mImageAdapter = new ImageAdapter(this, mBookList);
+        cartView.setAdapter(mImageAdapter);
 
         purchase = (Button) findViewById(R.id.purchase_button);
         purchase.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +43,6 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Singleton.getInstance().addBook(mBook);
                 Toast.makeText(CartActivity.this, "Purchased!", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -58,5 +54,67 @@ public class CartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        cartView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> adapterView, View view, int i, long l) {
+                final int mItem = i;
+
+                AlertDialog.Builder deleteItem = new AlertDialog.Builder(CartActivity.this);
+                deleteItem.setTitle("Remove from cart?");
+
+                deleteItem.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Singleton.getInstance().getBooks().remove(mItem);
+                        mImageAdapter.notifyDataSetChanged();
+                        //cartView.setAdapter(new ImageAdapter(CartActivity.this, mBookList));
+                    }
+                });
+                deleteItem.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                deleteItem.show();
+            }
+        });
+
+//        cartView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Intent intent = new Intent (CartActivity.this, DetailActivity.class);
+//                intent.putExtra(KEY_ID, mBookList.get(i).getID());
+//                startActivity(intent);
+//            }
+//        });
+
+//        cartView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Toast.makeText(CartActivity.this, "It works!", Toast.LENGTH_SHORT).show();
+//
+//                AlertDialog.Builder deleteItem = new AlertDialog.Builder(CartActivity.this);
+//                deleteItem.setTitle("Remove from cart?");
+//
+//                deleteItem.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        Singleton.getInstance().getBooks().remove(i);
+//                    }
+//                });
+//                deleteItem.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.cancel();
+//                    }
+//                });
+//                deleteItem.show();
+//                return false;
+//            }
+//        });
+
+
     }
 }

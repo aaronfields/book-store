@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -42,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Book> mGetAll = new ArrayList<>();
     private int ID;
     GridView gridview;
+    GridView litview;
+    GridView mysteryview;
+    GridView fanview;
+    GridView sortAuthorView;
+    GridView searchview;
     String query;
 
     @Override
@@ -84,15 +88,15 @@ public class MainActivity extends AppCompatActivity {
                 Book book9 = new Book("Science Fiction & Fantasy", "George Orwell", "1984", 6.00, "1949", book1984);
 
 
-                Publishers publisher1 = new Publishers("Scriber", "For Whom the Bell Tools", 4.00);
-                Publishers publisher2 = new Publishers("Penguin", "East of Eden", 5.00);
-                Publishers publisher3 = new Publishers("Scribner", "The Great Gatsby", 6.00);
-                Publishers publisher4 = new Publishers("Norstedts Förlag", "The Girl with the Dragon Tattoo", 3.00);
-                Publishers publisher5 = new Publishers("The Russian Messenger", "Crime and Punishment", 2.00);
-                Publishers publisher6 = new Publishers("Jonathan Cape", "From Russia with Love", 4.00);
-                Publishers publisher7 = new Publishers("Scholastic", "Harry Potter and the Sorcerer's Stone", 3.50);
-                Publishers publisher8 = new Publishers("Allen & Unwin", "The Lord of the Rings", 8.00);
-                Publishers publisher9 = new Publishers("Harvill Secker", "1984", 2.50);
+                Publisher publisher1 = new Publisher("Scribner", "For Whom the Bell Tolls", 4.00);
+                Publisher publisher2 = new Publisher("Penguin", "East of Eden", 5.00);
+                Publisher publisher3 = new Publisher("Scribner", "The Great Gatsby", 6.00);
+                Publisher publisher4 = new Publisher("Norstedts Förlag", "The Girl with the Dragon Tattoo", 3.00);
+                Publisher publisher5 = new Publisher("The Russian Messenger", "Crime and Punishment", 2.00);
+                Publisher publisher6 = new Publisher("Jonathan Cape", "From Russia with Love", 4.00);
+                Publisher publisher7 = new Publisher("Scholastic", "Harry Potter and the Sorcerer's Stone", 3.50);
+                Publisher publisher8 = new Publisher("Allen & Unwin", "The Lord of the Rings", 8.00);
+                Publisher publisher9 = new Publisher("Harvill Secker", "1984", 2.50);
 
                 helper.insertRow(book1);
                 helper.insertRow(book2);
@@ -144,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Create Action Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Aaron's Bookstore");
+        //toolbar.setTitle("Aaron's Bookstore");
+        //toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
     }
@@ -164,25 +169,27 @@ public class MainActivity extends AppCompatActivity {
 
         // Create Search function
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.search),
                 new MenuItemCompat.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem item) {
+                        mSearchBooks = helper.searchBooks(query);
+                        gridview.setAdapter(new ImageAdapter(MainActivity.this, mSearchBooks));
                         return true;
                     }
 
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
                        // helper.searchBooks(query);
-                        mSearchBooks = helper.searchBooks(query);
-                        gridview.setAdapter(new ImageAdapter(MainActivity.this, mSearchBooks));
+                        searchview = (GridView) findViewById(R.id.gridview);
+                        mBooks = helper.getBooks();
+                        searchview.setAdapter(new ImageAdapter(MainActivity.this, mBooks));
                         return true;
                     }
                 });
-
 
         return true;
     }
@@ -200,35 +207,57 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cat_literature:
+                litview = (GridView) findViewById(R.id.gridview);
                 mLitBooks = helper.getLitBooks();
-                Toast.makeText(MainActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
-                gridview.setAdapter(new ImageAdapter(this, mLitBooks));
-                helper.close();
+                //Toast.makeText(MainActivity.this, "It worked!", Toast.LENGTH_SHORT).show();
+                litview.setAdapter(new ImageAdapter(this, mLitBooks));
+                litview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent (MainActivity.this, DetailActivity.class);
+                        intent.putExtra(KEY_ID, mLitBooks.get(position).getID());
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.cat_mystery:
+                mysteryview = (GridView) findViewById(R.id.gridview);
                 mMysBooks = helper.getMysBooks();
-                gridview.setAdapter(new ImageAdapter(this, mMysBooks));
-                helper.close();
+                mysteryview.setAdapter(new ImageAdapter(this, mMysBooks));
+                mysteryview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent (MainActivity.this, DetailActivity.class);
+                        intent.putExtra(KEY_ID, mMysBooks.get(position).getID());
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.cat_fantasy:
+                fanview = (GridView) findViewById(R.id.gridview);
                 mFanBooks = helper.getFanBooks();
-                gridview.setAdapter(new ImageAdapter(this, mFanBooks));
-                helper.close();
+                fanview.setAdapter(new ImageAdapter(this, mFanBooks));
+                fanview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent (MainActivity.this, DetailActivity.class);
+                        intent.putExtra(KEY_ID, mFanBooks.get(position).getID());
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.sort_author:
+                sortAuthorView = (GridView) findViewById(R.id.gridview);
                 mSortAuthors = helper.getsortAuthors();
-                gridview.setAdapter(new ImageAdapter(this, mSortAuthors));
-                helper.close();
-                break;
-            case R.id.sort_date:
-                mSortDate = helper.getsortDate();
-                gridview.setAdapter(new ImageAdapter(this, mSortDate));
-                helper.close();
+                sortAuthorView.setAdapter(new ImageAdapter(this, mSortAuthors));
+                sortAuthorView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent (MainActivity.this, DetailActivity.class);
+                        intent.putExtra(KEY_ID, mSortAuthors.get(position).getID());
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.return_all:
-                mGetAll = helper.getAll();
-                gridview.setAdapter(new ImageAdapter(this, mGetAll));
-                helper.close();
+                mBooks = helper.getBooks();
+                gridview.setAdapter(new ImageAdapter(MainActivity.this, mBooks));
                 break;
         }
 

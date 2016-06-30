@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF">
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,6 +14,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.amicly.myapplication.DetailActivity"
+    android:background="#FFFFFF"
     >
 
     <ImageView
@@ -25,21 +31,34 @@
         android:layout_below="@+id/detail_image"
         android:layout_marginTop="10dp"
         android:text="Title"
-        android:layout_alignLeft="@+id/detail_image"/>
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_alignLeft="@+id/detail_image"
+        android:textColor="#000000"/>
     <TextView
         android:id="@+id/detail_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/detail_title"
         android:text="Author"
-        android:layout_alignLeft="@+id/detail_image"/>
+        android:layout_alignLeft="@+id/detail_image"
+        android:textColor="#000000"/>
+    <TextView
+        android:id="@+id/detail_publisher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_author"
+        android:text="Publisher"
+        android:layout_alignLeft="@+id/detail_image"
+        android:textColor="#000000"/>
     <TextView
         android:id="@+id/detail_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_author"
+        android:layout_below="@+id/detail_publisher"
         android:text="Year Published"
-        android:layout_alignLeft="@+id/detail_image"/>
+        android:layout_alignLeft="@+id/detail_image"
+        android:textColor="#000000"/>
     <TextView
         android:id="@+id/detail_price"
         android:layout_width="wrap_content"
@@ -72,3 +91,4 @@
 
 
 </RelativeLayout>
+</ScrollView>

@@ -102,7 +102,7 @@ public class Helper extends SQLiteOpenHelper {
 
     }
 
-    public void insertRowPublishers(Publishers publishers) {
+    public void insertRowPublishers(Publisher publishers) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DataEntryPublishers.COLUMN_COMPANY, publishers.getCompany());
@@ -111,105 +111,6 @@ public class Helper extends SQLiteOpenHelper {
         db.insertOrThrow(DataEntryPublishers.TABLE_NAME, null, values);
     }
 
-//    public Cursor searchProducts(String query){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        Cursor cursor = db.query(SQL_CREATE_ENTRIES_BOOKS,
-//                SHOPPING_COLUMNS,
-//                COL_ITEM_NAME+" LIKE ?",
-//                new String[]{"%"+query+"%"},
-//                null,
-//                null,
-//                null,
-//                null);
-//
-//        return cursor;
-//    }
-
-//    public String getLiterature() {
-//        String result = "Nothing found";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM books WHERE category = 'Literature &amp; Fiction'";
-//        Cursor cursor = db.rawQuery(query, null);
-//        cursor.moveToFirst();
-//        result = String.format(cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_TITLE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_AUTHOR)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_CATEGORY)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_DATE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_IMAGE)),
-//                cursor.getDouble(cursor.getColumnIndex(DataEntryBooks.COLUMN_PRICE)));
-//        cursor.moveToNext();
-//        cursor.close();
-//        return result;
-//    }
-
-//    public String getMystery() {
-//        String result = "Nothing found";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM books WHERE category = 'Mystery &amp; Suspense'";
-//        Cursor cursor = db.rawQuery(query, null);
-//        cursor.moveToFirst();
-//        result = String.format(cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_TITLE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_AUTHOR)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_CATEGORY)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_DATE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_IMAGE)),
-//                cursor.getDouble(cursor.getColumnIndex(DataEntryBooks.COLUMN_PRICE)));
-//        cursor.moveToNext();
-//        cursor.close();
-//        return result;
-//    }
-//
-//    public String getFantasy() {
-//        String result = "Nothing found";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM books WHERE category = 'Science Fiction &amp; Fantasy'";
-//        Cursor cursor = db.rawQuery(query, null);
-//        cursor.moveToFirst();
-//        result = String.format(cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_TITLE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_AUTHOR)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_CATEGORY)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_DATE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_IMAGE)),
-//                cursor.getDouble(cursor.getColumnIndex(DataEntryBooks.COLUMN_PRICE)));
-//        cursor.moveToNext();
-//        cursor.close();
-//        return result;
-//    }
-//
-//    public String sortByAuthor() {
-//        String result = "Nothing found";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM books ORDER BY author";
-//        Cursor cursor = db.rawQuery(query, null);
-//        cursor.moveToFirst();
-//        result = String.format(cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_TITLE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_AUTHOR)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_CATEGORY)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_DATE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_IMAGE)),
-//                cursor.getDouble(cursor.getColumnIndex(DataEntryBooks.COLUMN_PRICE)));
-//        cursor.moveToNext();
-//        cursor.close();
-//        return result;
-//    }
-//
-//    public String sortByDate() {
-//        String result = "Nothing found";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM books ORDER BY date";
-//        Cursor cursor = db.rawQuery(query, null);
-//        cursor.moveToFirst();
-//        result = String.format(cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_TITLE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_AUTHOR)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_CATEGORY)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_DATE)),
-//                cursor.getString(cursor.getColumnIndex(DataEntryBooks.COLUMN_IMAGE)),
-//                cursor.getDouble(cursor.getColumnIndex(DataEntryBooks.COLUMN_PRICE)));
-//        cursor.moveToNext();
-//        cursor.close();
-//        return result;
-//    }
 
 
     // Get books to show up on grid view
@@ -256,10 +157,32 @@ public class Helper extends SQLiteOpenHelper {
 
     }
 
+    private BookCursorWrapper queryPublisher(int bookID) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM publishers INNER JOIN books ON books.title = publishers.title WHERE books._id = " + bookID, null);
+        return new BookCursorWrapper(cursor);
+    }
+
+    //modify to just return a  book
+    public Publisher getPublisher(int position) {
+        Publisher publisher = null;
+        BookCursorWrapper cursor = queryPublisher(position);
+        try {
+            cursor.moveToFirst();
+            publisher = cursor.getPublisher();
+        } finally {
+            cursor.close();
+
+            return publisher;
+        }
+
+    }
+
+
     // Search function
     private BookCursorWrapper searchProducts(String query) {
         SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM books WHERE title LIKE %"+query+"% or author LIKE %"+query+"%", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM books WHERE title LIKE '%"+query+"%' or author LIKE '%"+query+"%'", null);
         return new BookCursorWrapper(cursor);
     }
 

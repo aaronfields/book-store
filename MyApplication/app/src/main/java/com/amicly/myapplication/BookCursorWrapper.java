@@ -15,6 +15,7 @@ public class BookCursorWrapper extends CursorWrapper {
     private double price;
     private String priceDouble;
     private String company;
+    private double wholesalePrice;
 
 
     public BookCursorWrapper(Cursor cursor) {
@@ -41,6 +42,21 @@ public class BookCursorWrapper extends CursorWrapper {
 
         return book;
 
+    }
+
+    public Publisher getPublisher() {
+        int id = getInt(getColumnIndex(Helper.DataEntryPublishers._ID));
+        String company = getString(getColumnIndex(Helper.DataEntryPublishers.COLUMN_COMPANY));
+        String title = getString(getColumnIndex(Helper.DataEntryPublishers.COLUMN_TITLE));
+        double wholesalePrice = getDouble(getColumnIndex(Helper.DataEntryPublishers.COLUMN_WPRICE));
+
+        Publisher publisher = new Publisher(id, company, title, wholesalePrice);
+        publisher.setID(id);
+        publisher.setCompany(company);
+        publisher.setTitle(title);
+        publisher.setWholesalePrice(wholesalePrice);
+
+        return publisher;
     }
 
 }

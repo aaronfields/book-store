@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class DetailActivity extends AppCompatActivity {
     private String category;
     private String author;
     private String title;
+    private String publisher;
     private String date;
     private String image;
     private double price;
@@ -34,9 +36,11 @@ public class DetailActivity extends AppCompatActivity {
     public int position;
     Helper helper;
     private Book mBook;
+    private Publisher mPublisher;
     public static final String KEY_ID2 = "Item ID2";
     private ArrayList<Book> mBooks = new ArrayList<>();
     private Button checkout;
+    private DecimalFormat df;
 
 
     @Override
@@ -52,17 +56,20 @@ public class DetailActivity extends AppCompatActivity {
 
         helper = Helper.getInstance(DetailActivity.this);
         mBook = helper.getMyBook(position);
+        mPublisher = helper.getPublisher(position);
 
 
         //mBook = new Book(category, author, title, price, date, image);
-        String category = mBook.getCategory();
+        //String category = mBook.getCategory();
         String title = mBook.getTitle();
         String author = mBook.getAuthor();
+        String publisher = mPublisher.getCompany();
         String date = mBook.getDate();
         final double price = mBook.getPrice();
         String priceDouble = Double.toString(price);
         String imageURI = mBook.getImageURI();
 
+        df = new DecimalFormat("0.00");
 
         titleText = (TextView) findViewById(R.id.detail_title);
         titleText.setText(title);
@@ -70,11 +77,14 @@ public class DetailActivity extends AppCompatActivity {
         authorText = (TextView) findViewById(R.id.detail_author);
         authorText.setText(author);
 
+        publisherText = (TextView) findViewById(R.id.detail_publisher);
+        publisherText.setText("Publisher: "+publisher);
+
         dateText = (TextView) findViewById(R.id.detail_date);
-        dateText.setText(date);
+        dateText.setText("Year Published: "+date);
 
         priceText = (TextView) findViewById(R.id.detail_price);
-        priceText.setText(priceDouble);
+        priceText.setText("$"+df.format(price));
 
         imageView = (ImageView) findViewById(R.id.detail_image);
         Picasso.with(DetailActivity.this).load(imageURI).into(imageView);

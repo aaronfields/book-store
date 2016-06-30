@@ -3,14 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.amicly.myapplication.MainActivity">
+    tools:context="com.amicly.myapplication.MainActivity"
+                android:background="#FFFFFF">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <LinearLayout
+            android:id="@+id/main_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/main_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aaron's Bookstore"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,10 +39,10 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_below="@+id/toolbar"
-              android:layout_marginTop="20dp"
+              android:layout_margin="10dp"
               android:numColumns="2"
-              android:verticalSpacing="10dp"
-              android:horizontalSpacing="10dp"
-              android:stretchMode="columnWidth"/>
+              android:verticalSpacing="60dp"
+              android:stretchMode="columnWidth"
+        />
 
 </RelativeLayout>
