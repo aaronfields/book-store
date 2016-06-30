@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class CartActivity extends AppCompatActivity {
     private int mIndex;
     public static final String KEY_ID = "Item ID";
     ImageAdapter mImageAdapter;
+    double total;
+    double priceToAdd;
+    TextView totalCost;
+    private String myTotal;
+
 
 
     @Override
@@ -33,15 +39,26 @@ public class CartActivity extends AppCompatActivity {
 
         mBookList = Singleton.getInstance().getBooks();
 
+        TextView totalCost = (TextView) findViewById(R.id.total);
+
+
         cartView= (GridView) findViewById(R.id.cart_gridview);
         mImageAdapter = new ImageAdapter(this, mBookList);
         cartView.setAdapter(mImageAdapter);
+
+        total = 0;
+        for(int mIndex = 0; mIndex < mBookList.size(); mIndex++) {
+            total += mBookList.get(mIndex).getPrice();
+            myTotal = Double.toString(total);
+            totalCost.setText(myTotal);
+        }
+
 
         purchase = (Button) findViewById(R.id.purchase_button);
         purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Singleton.getInstance().addBook(mBook);
+                //Singleton.getInstance().addBook(mBook);
                 Toast.makeText(CartActivity.this, "Purchased!", Toast.LENGTH_SHORT).show();
             }
         });
