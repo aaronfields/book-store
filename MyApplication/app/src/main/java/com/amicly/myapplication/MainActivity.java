@@ -258,9 +258,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.return_all:
                 mBooks = helper.getBooks();
                 gridview.setAdapter(new ImageAdapter(MainActivity.this, mBooks));
+                gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        Intent intent = new Intent (MainActivity.this, DetailActivity.class);
+                        intent.putExtra(KEY_ID, mBooks.get(position).getID());
+                        startActivity(intent);
+                    }
+                });
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
