@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class CartActivity extends AppCompatActivity {
     double priceToAdd;
     TextView totalCost;
     private String myTotal;
+    private DecimalFormat df;
 
 
 
@@ -46,11 +48,15 @@ public class CartActivity extends AppCompatActivity {
         mImageAdapter = new ImageAdapter(this, mBookList);
         cartView.setAdapter(mImageAdapter);
 
+        df = new DecimalFormat("0.00");
+
         total = 0;
         for(int mIndex = 0; mIndex < mBookList.size(); mIndex++) {
             total += mBookList.get(mIndex).getPrice();
-            myTotal = Double.toString(total);
-            totalCost.setText(myTotal);
+            //myTotal = Double.toString(total);
+            totalCost.setText("Total: $"+df.format(total));
+
+            //priceText.setText("$"+df.format(price));
         }
 
 
