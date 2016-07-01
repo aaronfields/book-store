@@ -142,7 +142,7 @@ public class Helper extends SQLiteOpenHelper {
         return new BookCursorWrapper(cursor);
     }
 
-    //modify to just return a  book
+    //Modify to just return a  book
     public Book getMyBook(int position) {
         Book book = null;
         BookCursorWrapper cursor = queryBook(position);
@@ -156,7 +156,7 @@ public class Helper extends SQLiteOpenHelper {
         }
 
     }
-
+    // Use Joins to get the publisher for the detail view
     private BookCursorWrapper queryPublisher(int bookID) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM publishers INNER JOIN books ON books.title = publishers.title WHERE books._id = " + bookID, null);
@@ -179,7 +179,7 @@ public class Helper extends SQLiteOpenHelper {
     }
 
 
-    // Search function
+    // Search function query
     private BookCursorWrapper searchProducts(String query) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM books WHERE title LIKE '%"+query+"%' or author LIKE '%"+query+"%'", null);
@@ -223,6 +223,7 @@ public class Helper extends SQLiteOpenHelper {
         return books;
     }
 
+    // Query for Mystery category
     private BookCursorWrapper queryMystery() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM books WHERE category LIKE 'Mystery%'", null);
@@ -244,6 +245,7 @@ public class Helper extends SQLiteOpenHelper {
         return books;
     }
 
+    //Query for Science Fiction & Fantasy
     private BookCursorWrapper queryFantasy() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM books WHERE category LIKE 'Science%'", null);
@@ -265,6 +267,7 @@ public class Helper extends SQLiteOpenHelper {
         return books;
     }
 
+    // Sort by authors query
     private BookCursorWrapper sortAuthors() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM books ORDER BY author", null);
@@ -286,28 +289,7 @@ public class Helper extends SQLiteOpenHelper {
         return books;
     }
 
-    private BookCursorWrapper sortDate() {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM books ORDER BY date", null);
-        return new BookCursorWrapper(cursor);
-    }
-
-    public ArrayList<Book> getsortDate(){
-        ArrayList<Book> books = new ArrayList<>();
-        BookCursorWrapper cursor = sortDate();
-        try {
-            cursor.moveToFirst();
-            while(!cursor.isAfterLast()) {
-                books.add(cursor.getBook());
-                cursor.moveToNext();
-            }
-        } finally {
-            cursor.close();
-        }
-        return books;
-    }
-
-
+    // Query for all books
     private BookCursorWrapper returnAll() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM books", null);
@@ -329,7 +311,7 @@ public class Helper extends SQLiteOpenHelper {
         return books;
     }
 
-
+    // Method to clean database
     public void cleanDataBase(){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM books");

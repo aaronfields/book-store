@@ -28,9 +28,9 @@ public class CartActivity extends AppCompatActivity {
     ImageAdapter mImageAdapter;
     double total;
     double priceToAdd;
-    TextView totalCost;
     private String myTotal;
     private DecimalFormat df;
+    TextView totalCost;
 
 
 
@@ -40,31 +40,26 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         mBookList = Singleton.getInstance().getBooks();
-
-        TextView totalCost = (TextView) findViewById(R.id.total);
-
-
+        totalCost = (TextView) findViewById(R.id.total);
         cartView= (GridView) findViewById(R.id.cart_gridview);
+
         mImageAdapter = new ImageAdapter(this, mBookList);
         cartView.setAdapter(mImageAdapter);
 
         df = new DecimalFormat("0.00");
 
         total = 0;
+        totalCost.setText("Total: $" + df.format(total));
         for(int mIndex = 0; mIndex < mBookList.size(); mIndex++) {
             total += mBookList.get(mIndex).getPrice();
-            //myTotal = Double.toString(total);
             totalCost.setText("Total: $"+df.format(total));
 
-            //priceText.setText("$"+df.format(price));
         }
-
 
         purchase = (Button) findViewById(R.id.purchase_button);
         purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Singleton.getInstance().addBook(mBook);
                 Toast.makeText(CartActivity.this, "Purchased!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -91,7 +86,16 @@ public class CartActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Singleton.getInstance().getBooks().remove(mItem);
                         mImageAdapter.notifyDataSetChanged();
-                        //cartView.setAdapter(new ImageAdapter(CartActivity.this, mBookList));
+                        total = 0;
+                        if(mBookList.size()>0){
+                        for(int mIndex = 0; mIndex < mBookList.size(); mIndex++) {
+                            total += mBookList.get(mIndex).getPrice();
+                            totalCost.setText("Total: $" + df.format(total));
+                        }
+                            }else {
+                            total = 0;
+                            totalCost.setText("Total: $" + df.format(total));
+                        }
                     }
                 });
                 deleteItem.setNegativeButton("No", new DialogInterface.OnClickListener() {

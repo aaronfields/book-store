@@ -51,17 +51,10 @@ public class BookstoreTest {
     @Test
     public void canClickGridItem() {
 
-
-        //onView(nthChildOf(withId(R.id.gridview), 4)).perform(scrollTo()).check(matches(hasDescendant(withText("Crime and Punishment"))));
-        //onView(nthChildOf(withId(R.id.gridview), 4)).check(matches(hasDescendant(withText("Crime and Punishment"))));
         onView(withId(R.id.gridview)).perform(swipeUp());
         onView(withText("Crime and Punishment")).check(matches(isDisplayed()));
 
-        //onView(nthChildOf(withId(R.id.gridview), 2)).perform(scrollTo());
-
     }
-
-
 
     @Test
     public void addToCart() {

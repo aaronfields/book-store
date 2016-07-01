@@ -123,18 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(String s) {
-
+                // Populate GridView with data
                 super.onPostExecute(s);
                 mBooks = helper.getBooks();
                 gridview.setAdapter(new ImageAdapter(MainActivity.this, mBooks));
 
             }
         }.execute();
-
-        // Populate the gridview with the data we just put into the database
-        //mBooks = helper.getBooks();
-        //gridview = (GridView) findViewById(R.id.gridview);
-        //gridview.setAdapter(new ImageAdapter(this, mBooks));
 
         // Set on-click to bring object clicked to details activity
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -145,18 +140,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        // Create Action Bar
+        // Create  Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //toolbar.setTitle("Aaron's Bookstore");
-        //toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
     }
 
     // Create menu on Action Bar
-
-
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
@@ -193,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
+    //Set up query and OnClick for search
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);

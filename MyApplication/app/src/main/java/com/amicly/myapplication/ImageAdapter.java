@@ -21,6 +21,7 @@ public class ImageAdapter extends BaseAdapter{
     private ArrayList<Book> mBooks;
     private DecimalFormat df;
 
+    // Constructor for ImageAdapter
     public ImageAdapter(Context c, ArrayList<Book> b) {
         mContext = c;
         mBooks = b;
@@ -38,7 +39,7 @@ public class ImageAdapter extends BaseAdapter{
         return mBooks.get(position).getID();
     }
 
-    // create a new ImageView for each item referenced by the Adapter
+    // Set database items to layout
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
 
@@ -72,12 +73,5 @@ public class ImageAdapter extends BaseAdapter{
         return gridView;
     }
 
-    // references to our images
-    public Integer[] mThumbIds = {
-            R.drawable.for_whom_the_bell_tolls, R.drawable.east_of_eden, R.drawable.great_gatsby,
-            R.drawable.dragon_tattoo, R.drawable.crime_and_punishment, R.drawable.from_russia_with_love,
-            R.drawable.harry_potter, R.drawable.lord_of_the_rings, R.drawable.book1984
-
-    };
 }
 
