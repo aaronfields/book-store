@@ -195,10 +195,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleIntent(Intent intent) {
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
             mSearchBooks = helper.searchBooks(query);
             gridview.setAdapter(new ImageAdapter(this, mSearchBooks));
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra(KEY_ID, mSearchBooks.get(position).getID());
+                    startActivity(intent);
+                }
+            });
         }
     }
 
