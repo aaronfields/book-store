@@ -1,0 +1,6 @@
+{
+  "name": "Book-store",
+  "tagline": "Bookstore E-commerce App",
+  "body": "I'm a big reader so for my first attempt at an ecommerce app I figured a bookstore was appropriate. I implemented AsyncTask, SQLite, Picasso, and Espresso tests in this project.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
